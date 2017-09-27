@@ -10,9 +10,9 @@ import (
 
 var cmdCopy = &Command{
 	Run:       runCopy,
-	UsageLine: "copy",
+	UsageLine: "copy NAME",
 	Short:     "Copy password to clipboard",
-	Long:      ``,
+	Long:      `Find password and copy to clipboard.`,
 }
 
 func runCopy(ctx context, args []string) error {

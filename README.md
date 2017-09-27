@@ -7,6 +7,26 @@
 ## Description
 
 Secret file based password management tool.
+Save your password interactively with `new` subcommand.
+Input password is encrypted with AES-256 using your secret file.
+
+## Configuration
+
+If `$HOME/.config/spwd/config.yml` exists, use it.
+
+```yml
+# using secret file path
+identity_file: /path/to/your/secret/file
+# data file path
+data_file: /path/to/your/data/file
+```
+
+If config file is not found, `spwd` using below configuration as default.
+
+```yml
+identity_file: ~/.ssh/id_rsa
+data_file: ~/.local/share/spwd/data.yml
+```
 
 ## Install
 

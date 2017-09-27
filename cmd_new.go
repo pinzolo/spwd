@@ -15,7 +15,7 @@ var cmdNew = &Command{
 	Run:       runNew,
 	UsageLine: "new",
 	Short:     "Register new password item",
-	Long:      ``,
+	Long:      `Register new password item to data file.`,
 }
 
 func runNew(ctx context, args []string) error {
