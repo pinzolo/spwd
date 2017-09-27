@@ -52,6 +52,7 @@ func (c *Command) Usage() {
 // The order here is the order in which they are printed by 'spwd help'.
 var commands = []*Command{
 	cmdCopy,
+	cmdList,
 	cmdNew,
 }
 
@@ -93,7 +94,8 @@ func main() {
 	os.Exit(2)
 }
 
-var usageTemplate = `spwd is a tool for
+var usageTemplate = `spwd is secret file based password management tool.
+Input password is encrypted with AES-256 using your secret file.
 
 Usage:
 

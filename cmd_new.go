@@ -14,8 +14,10 @@ import (
 var cmdNew = &Command{
 	Run:       runNew,
 	UsageLine: "new",
-	Short:     "Register new password item",
-	Long:      `Register new password item to data file.`,
+	Short:     "Register new password item interactively",
+	Long: `Register new password item to data file interactively.
+If input name already exists, you can update it.
+`,
 }
 
 func runNew(ctx context, args []string) error {
