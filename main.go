@@ -78,15 +78,13 @@ func main() {
 			args = cmd.Flag.Args()
 
 			ow := bufio.NewWriter(os.Stdout)
-			ew := bufio.NewWriter(os.Stderr)
-			err := cmd.Run(newContext(ow, ew), args)
+			err := cmd.Run(newContext(ow), args)
 			code := 0
 			if err != nil {
-				fmt.Fprintln(ew, err)
+				fmt.Fprintln(os.Stderr, err)
 				code = 2
 			}
 			ow.Flush()
-			ew.Flush()
 			os.Exit(code)
 		}
 	}
