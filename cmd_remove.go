@@ -32,7 +32,7 @@ func runRemove(ctx context, args []string) error {
 		return fmt.Errorf("item not found: %s", name)
 	}
 
-	nis := Items(make([]Item, len(is)-1))
+	nis := Items([]Item{})
 	for _, it := range is {
 		if it.Name != fit.Name {
 			nis = append(nis, it)
