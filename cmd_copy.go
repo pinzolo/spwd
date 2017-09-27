@@ -47,6 +47,6 @@ func runCopy(ctx context, args []string) error {
 		return err
 	}
 	clipboard.WriteAll(pwd)
-	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' copy to clipboard", it.Name))
+	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' copy to clipboard successfully", it.Name))
 	return nil
 }
