@@ -7,7 +7,8 @@
 ## Description
 
 Secret file based password management tool.
-Save your password interactively with `new` subcommand.
+
+Save your password interactively with `new` subcommand.  
 Input password is encrypted with AES-256 using your secret file.
 
 ## Configuration
