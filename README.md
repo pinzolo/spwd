@@ -13,7 +13,7 @@ Input password is encrypted with AES-256 using your secret file.
 
 ## Screenshot
 
-![Screenshot](https://pinzolo.github.io/assets/img/20170928_spwd-sample.gif)
+[Screenshot](https://pinzolo.github.io/assets/img/20170928_spwd-sample.gif)
 
 ## Configuration
 
