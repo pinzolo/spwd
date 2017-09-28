@@ -44,17 +44,23 @@ func runMigrate(ctx context, args []string) error {
 	}
 
 	nis := Items(make([]Item, len(is)))
+	var pwd, enc string
 	for i, it := range is {
-		pwd, err := Decrypt(key, it.Encrypted)
+		pwd, err = Decrypt(key, it.Encrypted)
 		if err != nil {
 			return err
 		}
-		enc, err := Encrypt(nkey, pwd)
+		enc, err = Encrypt(nkey, pwd)
 		if err != nil {
 			return err
 		}
 		nis[i] = NewItem(it.Name, it.Description, enc)
 	}
 
-	return nis.Save(MigrateFileName)
+	err = nis.Save(MigrateFileName)
+	if err != nil {
+		return err
+	}
+	fmt.Fprintln(ctx.out, fmt.Sprintf("new data file saved as %s successfully", MigrateFileName))
+	return nil
 }
