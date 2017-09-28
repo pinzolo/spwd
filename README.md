@@ -11,6 +11,10 @@ Secret file based password management tool.
 Save your password interactively with `new` subcommand.  
 Input password is encrypted with AES-256 using your secret file.
 
+## Screenshot
+
+![Screenshot](https://pinzolo.github.io/assets/img/20170928_spwd-sample.gif)
+
 ## Configuration
 
 If `$HOME/.config/spwd/config.yml` exists, use it.
