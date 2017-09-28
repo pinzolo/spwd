@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"io/ioutil"
 
 	"github.com/atotto/clipboard"
 )
@@ -33,11 +32,10 @@ func runCopy(ctx context, args []string) error {
 		return fmt.Errorf("item not found: %s", args[0])
 	}
 
-	keySrc, err := ioutil.ReadFile(cfg.KeyFile)
+	key, err := GetKey(cfg.KeyFile)
 	if err != nil {
 		return err
 	}
-	key := GenKey(keySrc)
 	dec, err := Decode(it.Encrypted)
 	if err != nil {
 		return err

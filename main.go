@@ -53,6 +53,7 @@ func (c *Command) Usage() {
 var commands = []*Command{
 	cmdCopy,
 	cmdList,
+	cmdMigrate,
 	cmdNew,
 	cmdRemove,
 }

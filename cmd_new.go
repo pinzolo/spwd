@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"syscall"
@@ -31,15 +30,14 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 
-	keySrc, err := ioutil.ReadFile(cfg.KeyFile)
-	if err != nil {
-		return err
-	}
 	name, desc, pwd, err := scan()
 	if err != nil {
 		return err
 	}
-	key := GenKey(keySrc)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
 	enc, err := Encrypt(key, string(pwd))
 	nit := NewItem(name, desc, Encode(enc))
 	if err != nil {

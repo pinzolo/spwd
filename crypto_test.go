@@ -1,8 +1,26 @@
 package main
 
 import (
+	"path/filepath"
 	"testing"
 )
+
+func TestGetKey(t *testing.T) {
+	key, err := GetKey(filepath.Join("testdata", "key_file"))
+	if err != nil {
+		t.Error(err)
+	}
+	if len(key) != 32 {
+		t.Errorf("GetKey should returns 32 byte, but got %v", len(key))
+	}
+}
+
+func TestGetKeyWithFileNotExist(t *testing.T) {
+	_, err := GetKey(filepath.Join("testdata", "not_exist"))
+	if err == nil {
+		t.Error("GetKey with not exist file should rase error")
+	}
+}
 
 func TestKeyLength(t *testing.T) {
 	k1 := GenKey([]byte("short string"))

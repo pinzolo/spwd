@@ -6,7 +6,21 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"io"
+	"io/ioutil"
+	"os"
 )
+
+// GetKey returns key for encrypt from file on given path.
+func GetKey(fp string) ([]byte, error) {
+	if _, err := os.Stat(fp); err != nil {
+		return nil, err
+	}
+	keySrc, err := ioutil.ReadFile(fp)
+	if err != nil {
+		return nil, err
+	}
+	return GenKey(keySrc), nil
+}
 
 // GenKey generates key for encrypt from src bytes.
 func GenKey(src []byte) []byte {
