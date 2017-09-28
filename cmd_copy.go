@@ -33,7 +33,7 @@ func runCopy(ctx context, args []string) error {
 		return fmt.Errorf("item not found: %s", args[0])
 	}
 
-	keySrc, err := ioutil.ReadFile(cfg.IdentityFile)
+	keySrc, err := ioutil.ReadFile(cfg.KeyFile)
 	if err != nil {
 		return err
 	}

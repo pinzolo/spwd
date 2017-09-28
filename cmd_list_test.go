@@ -47,10 +47,10 @@ func setupTestData() (func(), error) {
 	os.Setenv("XDG_CONFIG_HOME", td)
 	os.Mkdir(filepath.Join(td, "spwd"), 0755)
 	copyTestFile("data.yml", td)
-	copyTestFile("identity_file", td)
+	copyTestFile("key_file", td)
 	cfg := Config{
-		IdentityFile: filepath.Join(td, "identity_file"),
-		DataFile:     filepath.Join(td, "data.yml"),
+		KeyFile:  filepath.Join(td, "key_file"),
+		DataFile: filepath.Join(td, "data.yml"),
 	}
 	cfp, err := os.Create(filepath.Join(td, "spwd", "config.yml"))
 	defer cfp.Close()

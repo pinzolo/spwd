@@ -31,7 +31,7 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 
-	keySrc, err := ioutil.ReadFile(cfg.IdentityFile)
+	keySrc, err := ioutil.ReadFile(cfg.KeyFile)
 	if err != nil {
 		return err
 	}

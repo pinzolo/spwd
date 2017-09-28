@@ -9,16 +9,16 @@ import (
 
 func TestMerge(t *testing.T) {
 	a := Config{
-		IdentityFile: "aid",
-		DataFile:     "adata",
+		KeyFile:  "aid",
+		DataFile: "adata",
 	}
 	b := Config{
-		IdentityFile: "bid",
-		DataFile:     "bdata",
+		KeyFile:  "bid",
+		DataFile: "bdata",
 	}
 	x := a.Merge(b)
-	if x.IdentityFile != "bid" {
-		t.Errorf("IdentityFile should be 'bid', but got %s", x.IdentityFile)
+	if x.KeyFile != "bid" {
+		t.Errorf("KeyFile should be 'bid', but got %s", x.KeyFile)
 	}
 	if x.DataFile != "bdata" {
 		t.Errorf("DataFile should be 'bdata', but got %s", x.DataFile)
@@ -27,11 +27,11 @@ func TestMerge(t *testing.T) {
 
 func TestMergeNotOverwriteWithEmpty(t *testing.T) {
 	a := Config{
-		IdentityFile: "aid",
-		DataFile:     "adata",
+		KeyFile:  "aid",
+		DataFile: "adata",
 	}
 	b := Config{
-		IdentityFile: "bid",
+		KeyFile: "bid",
 	}
 	c := Config{
 		DataFile: "cdata",
@@ -39,22 +39,22 @@ func TestMergeNotOverwriteWithEmpty(t *testing.T) {
 	d := Config{}
 
 	x := a.Merge(b)
-	if x.IdentityFile != "bid" {
-		t.Errorf("IdentityFile should be 'bid', but got %s", x.IdentityFile)
+	if x.KeyFile != "bid" {
+		t.Errorf("KeyFile should be 'bid', but got %s", x.KeyFile)
 	}
 	if x.DataFile != "adata" {
 		t.Errorf("DataFile should not be empty, but got %s", x.DataFile)
 	}
 	x = a.Merge(c)
-	if x.IdentityFile != "aid" {
-		t.Errorf("IdentityFile should not be empty, but got %s", x.IdentityFile)
+	if x.KeyFile != "aid" {
+		t.Errorf("KeyFile should not be empty, but got %s", x.KeyFile)
 	}
 	if x.DataFile != "cdata" {
 		t.Errorf("DataFile should be 'cdata', but got %s", x.DataFile)
 	}
 	x = a.Merge(d)
-	if x.IdentityFile != "aid" {
-		t.Errorf("IdentityFile should not be empty, but got %s", x.IdentityFile)
+	if x.KeyFile != "aid" {
+		t.Errorf("KeyFile should not be empty, but got %s", x.KeyFile)
 	}
 	if x.DataFile != "adata" {
 		t.Errorf("DataFile should not be empty, but got %s", x.DataFile)
@@ -63,16 +63,16 @@ func TestMergeNotOverwriteWithEmpty(t *testing.T) {
 
 func TestMergeNotOverwriteSelf(t *testing.T) {
 	a := Config{
-		IdentityFile: "aid",
-		DataFile:     "adata",
+		KeyFile:  "aid",
+		DataFile: "adata",
 	}
 	b := Config{
-		IdentityFile: "bid",
-		DataFile:     "bdata",
+		KeyFile:  "bid",
+		DataFile: "bdata",
 	}
 	a.Merge(b)
-	if a.IdentityFile != "aid" {
-		t.Errorf("self value should not be overwritten with other, but got %s", a.IdentityFile)
+	if a.KeyFile != "aid" {
+		t.Errorf("self value should not be overwritten with other, but got %s", a.KeyFile)
 	}
 	if a.DataFile != "adata" {
 		t.Errorf("self value should not be overwritten with other, but got %s", a.DataFile)
@@ -81,16 +81,16 @@ func TestMergeNotOverwriteSelf(t *testing.T) {
 
 func TestMergeNotOverwriteOther(t *testing.T) {
 	a := Config{
-		IdentityFile: "aid",
-		DataFile:     "adata",
+		KeyFile:  "aid",
+		DataFile: "adata",
 	}
 	b := Config{
-		IdentityFile: "bid",
-		DataFile:     "bdata",
+		KeyFile:  "bid",
+		DataFile: "bdata",
 	}
 	a.Merge(b)
-	if b.IdentityFile != "bid" {
-		t.Errorf("other value should not be overwritten with other, but got %s", b.IdentityFile)
+	if b.KeyFile != "bid" {
+		t.Errorf("other value should not be overwritten with other, but got %s", b.KeyFile)
 	}
 	if b.DataFile != "bdata" {
 		t.Errorf("other value should not be overwritten with other, but got %s", b.DataFile)
@@ -109,11 +109,11 @@ func TestDefaultConfig(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	if cfg.IdentityFile != filepath.Join(td, ".ssh", "id_rsa") {
-		t.Errorf("default identity file path is invalid, got %s", cfg.IdentityFile)
+	if cfg.KeyFile != filepath.Join(td, ".ssh", "id_rsa") {
+		t.Errorf("default key file path is invalid, got %s", cfg.KeyFile)
 	}
 	if cfg.DataFile != filepath.Join(td, "spwd", "data.yml") {
-		t.Errorf("default data file path is invalid, got %s", cfg.IdentityFile)
+		t.Errorf("default data file path is invalid, got %s", cfg.KeyFile)
 	}
 }
 
@@ -132,14 +132,14 @@ func TestFileConfigOnFileExist(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	f.WriteString(`identity_file: /tmp/config.yml
+	f.WriteString(`key_file: /tmp/config.yml
 data_file: /tmp/data.yml
 `)
 	cfg, ok := FileConfig()
 	if !ok {
 		t.Error("FileConfig should return true when config file exists")
 	}
-	if cfg.IdentityFile != "/tmp/config.yml" {
+	if cfg.KeyFile != "/tmp/config.yml" {
 		t.Error("FileConfig load invalid file.")
 	}
 }

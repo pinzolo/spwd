@@ -14,8 +14,8 @@ var app = xdgdir.NewApp("spwd")
 
 // Config is configurations holder of spwd app.
 type Config struct {
-	// IdentityFile is file path of ssl secret file.
-	IdentityFile string `yaml:"identity_file"`
+	// KeyFile is file path of secret file.
+	KeyFile string `yaml:"key_file"`
 	// DataFile is file path of storing encrypted passwords.
 	DataFile string `yaml:"data_file"`
 }
@@ -36,11 +36,11 @@ func GetConfig() (Config, error) {
 // Merge config values and returns new Config.
 func (cfg Config) Merge(other Config) Config {
 	newCfg := Config{
-		IdentityFile: cfg.IdentityFile,
-		DataFile:     cfg.DataFile,
+		KeyFile:  cfg.KeyFile,
+		DataFile: cfg.DataFile,
 	}
-	if other.IdentityFile != "" {
-		newCfg.IdentityFile = other.IdentityFile
+	if other.KeyFile != "" {
+		newCfg.KeyFile = other.KeyFile
 	}
 	if other.DataFile != "" {
 		newCfg.DataFile = other.DataFile
@@ -55,8 +55,8 @@ func DefaultConfig() (Config, error) {
 		return Config{}, err
 	}
 	return Config{
-		IdentityFile: filepath.Join(homeDir(), ".ssh", "id_rsa"),
-		DataFile:     df,
+		KeyFile:  filepath.Join(homeDir(), ".ssh", "id_rsa"),
+		DataFile: df,
 	}, nil
 }
 
