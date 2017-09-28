@@ -45,11 +45,7 @@ func runMigrate(ctx context, args []string) error {
 
 	nis := Items(make([]Item, len(is)))
 	for i, it := range is {
-		dec, err := Decode(it.Encrypted)
-		if err != nil {
-			return err
-		}
-		pwd, err := Decrypt(key, dec)
+		pwd, err := Decrypt(key, it.Encrypted)
 		if err != nil {
 			return err
 		}
@@ -57,7 +53,7 @@ func runMigrate(ctx context, args []string) error {
 		if err != nil {
 			return err
 		}
-		nis[i] = NewItem(it.Name, it.Description, Encode(enc))
+		nis[i] = NewItem(it.Name, it.Description, enc)
 	}
 
 	return nis.Save(MigrateFileName)

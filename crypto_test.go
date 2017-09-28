@@ -60,7 +60,7 @@ func TestEncryptWithInvalidKey(t *testing.T) {
 }
 
 func TestDecryptWithInvalidKey(t *testing.T) {
-	_, err := Decrypt([]byte("foobar"), []byte("password"))
+	_, err := Decrypt([]byte("foobar"), "password")
 	if err == nil {
 		t.Error("Decrypt with invalid key should raise error")
 	}
@@ -82,5 +82,17 @@ func TestCannotDecryptWithOtherKey(t *testing.T) {
 
 	if d == pwd {
 		t.Errorf("Decrypt with other key should fail")
+	}
+}
+
+func TestEncodeAndDecode(t *testing.T) {
+	data := []byte("password")
+	e := Encode(data)
+	d, err := Decode(e)
+	if err != nil {
+		t.Error(err)
+	}
+	if string(d) != "password" {
+		t.Error("Decorde failure")
 	}
 }

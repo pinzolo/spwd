@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/base64"
 	"io"
 	"io/ioutil"
 	"os"
@@ -28,27 +29,31 @@ func GenKey(src []byte) []byte {
 	return hash[:]
 }
 
-// Encrypt text with AES-256
-func Encrypt(key []byte, text string) ([]byte, error) {
+// Encrypt text with AES-256 and encode with base64
+func Encrypt(key []byte, text string) (string, error) {
 	data := []byte(text)
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	cipherText := make([]byte, aes.BlockSize+len(data))
 	iv := cipherText[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return nil, err
+		return "", err
 	}
 
 	stream := cipher.NewCTR(block, iv)
 	stream.XORKeyStream(cipherText[aes.BlockSize:], data)
-	return cipherText, nil
+	return Encode(cipherText), nil
 }
 
 // Decrypt data with AES-256
-func Decrypt(key []byte, data []byte) (string, error) {
+func Decrypt(key []byte, encrypted string) (string, error) {
+	data, err := Decode(encrypted)
+	if err != nil {
+		return "", err
+	}
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -60,4 +65,14 @@ func Decrypt(key []byte, data []byte) (string, error) {
 	stream := cipher.NewCTR(block, iv)
 	stream.XORKeyStream(dst, src)
 	return string(dst), nil
+}
+
+// Encode data with base64
+func Encode(data []byte) string {
+	return base64.StdEncoding.EncodeToString(data)
+}
+
+// Decode data with base64
+func Decode(text string) ([]byte, error) {
+	return base64.StdEncoding.DecodeString(text)
 }

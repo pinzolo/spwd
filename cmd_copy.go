@@ -36,11 +36,7 @@ func runCopy(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	dec, err := Decode(it.Encrypted)
-	if err != nil {
-		return err
-	}
-	pwd, err := Decrypt(key, dec)
+	pwd, err := Decrypt(key, it.Encrypted)
 	if err != nil {
 		return err
 	}

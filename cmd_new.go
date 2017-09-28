@@ -39,7 +39,7 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 	enc, err := Encrypt(key, string(pwd))
-	nit := NewItem(name, desc, Encode(enc))
+	nit := NewItem(name, desc, enc)
 	if err != nil {
 		return err
 	}
