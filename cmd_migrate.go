@@ -8,8 +8,8 @@ import (
 var cmdMigrate = &Command{
 	Run:       runMigrate,
 	UsageLine: "migrate",
-	Short:     "Migrate name and description",
-	Long:      `Migrate name and description of saved passwords.`,
+	Short:     "Regenerate data file",
+	Long:      `Regenerate data file with new key file.`,
 }
 
 // MigrateFileName is file name that created with migrate subcommand.
