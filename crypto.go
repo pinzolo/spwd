@@ -30,8 +30,7 @@ func GenKey(src []byte) []byte {
 }
 
 // Encrypt text with AES-256 and encode with base64
-func Encrypt(key []byte, text string) (string, error) {
-	data := []byte(text)
+func Encrypt(key []byte, data []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
 		return "", err
@@ -49,14 +48,14 @@ func Encrypt(key []byte, text string) (string, error) {
 }
 
 // Decrypt data with AES-256
-func Decrypt(key []byte, encrypted string) (string, error) {
+func Decrypt(key []byte, encrypted string) ([]byte, error) {
 	data, err := Decode(encrypted)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	iv := data[:aes.BlockSize]
@@ -64,7 +63,7 @@ func Decrypt(key []byte, encrypted string) (string, error) {
 	dst := make([]byte, len(src))
 	stream := cipher.NewCTR(block, iv)
 	stream.XORKeyStream(dst, src)
-	return string(dst), nil
+	return dst, nil
 }
 
 // Encode data with base64

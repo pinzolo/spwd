@@ -50,7 +50,7 @@ func (cfg Config) Merge(other Config) Config {
 
 // DefaultConfig return sefault configuration.
 func DefaultConfig() (Config, error) {
-	df, err := app.DataFile("data.yml")
+	df, err := app.DataFile("data.dat")
 	if err != nil {
 		return Config{}, err
 	}

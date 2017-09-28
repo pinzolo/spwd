@@ -29,7 +29,7 @@ func TestCmdMigrate(t *testing.T) {
 	if _, err = os.Stat(MigrateFileName); err != nil {
 		t.Errorf("Migrate should create %s: %v", MigrateFileName, err)
 	}
-	src, err := ioutil.ReadFile("testdata/data.yml")
+	src, err := ioutil.ReadFile("testdata/data.dat")
 	if err != nil {
 		t.Error(err)
 	}

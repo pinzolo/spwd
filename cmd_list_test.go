@@ -26,7 +26,7 @@ func TestCmdList(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	expected := "  NAME           DESCRIPTION           \n ------ ------------------------------- \n  foo   This is test password          \n  bar   This is another test password  \n"
+	expected := "  NAME        DESCRIPTION         \n ------ -------------------------- \n  foo   This is test password     \n  bar   This is another password  \n"
 	if got := out.String(); got != expected {
 		t.Errorf("exptected: \n%s\n\nbut got: \n%s", expected, got)
 		fmt.Println(len(expected), len(got))
@@ -46,11 +46,11 @@ func setupTestData() (func(), error) {
 
 	os.Setenv("XDG_CONFIG_HOME", td)
 	os.Mkdir(filepath.Join(td, "spwd"), 0755)
-	copyTestFile("data.yml", td)
+	copyTestFile("data.dat", td)
 	copyTestFile("key_file", td)
 	cfg := Config{
 		KeyFile:  filepath.Join(td, "key_file"),
-		DataFile: filepath.Join(td, "data.yml"),
+		DataFile: filepath.Join(td, "data.dat"),
 	}
 	cfp, err := os.Create(filepath.Join(td, "spwd", "config.yml"))
 	defer cfp.Close()

@@ -24,7 +24,11 @@ func TestCmdRemove(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		t.Error(err)
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		t.Error(err)
 	}

@@ -12,8 +12,8 @@ type Item struct {
 	Name string `yaml:"name"`
 	// Description is free description of password.
 	Description string `yaml:"description"`
-	// Encrypted is encrypted password that is encoded with base64.
-	Encrypted string `yaml:"encrypted"`
+	// Password text.
+	Password string `yaml:"password"`
 }
 
 // NewItem returns new item that initialized give values.
@@ -21,7 +21,7 @@ func NewItem(name string, desc string, enc string) Item {
 	return Item{
 		Name:        name,
 		Description: desc,
-		Encrypted:   enc,
+		Password:    enc,
 	}
 }
 
@@ -39,7 +39,7 @@ func (is Items) Find(name string) *Item {
 }
 
 // LoadItems load items from file on given path.
-func LoadItems(path string) (Items, error) {
+func LoadItems(key []byte, path string) (Items, error) {
 	_, err := os.Stat(path)
 	if err != nil {
 		return Items{}, nil
@@ -49,8 +49,12 @@ func LoadItems(path string) (Items, error) {
 	if err != nil {
 		return nil, err
 	}
+	dec, err := Decrypt(key, string(p))
+	if err != nil {
+		return nil, err
+	}
 	var is Items
-	err = yaml.Unmarshal(p, &is)
+	err = yaml.Unmarshal(dec, &is)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +62,7 @@ func LoadItems(path string) (Items, error) {
 }
 
 // Save items to file on given path.
-func (is Items) Save(path string) error {
+func (is Items) Save(key []byte, path string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -68,7 +72,11 @@ func (is Items) Save(path string) error {
 	if err != nil {
 		return err
 	}
-	f.Write(p)
+	enc, err := Encrypt(key, p)
+	if err != nil {
+		return err
+	}
+	f.WriteString(enc)
 	return nil
 }
 

@@ -112,7 +112,7 @@ func TestDefaultConfig(t *testing.T) {
 	if cfg.KeyFile != filepath.Join(td, ".ssh", "id_rsa") {
 		t.Errorf("default key file path is invalid, got %s", cfg.KeyFile)
 	}
-	if cfg.DataFile != filepath.Join(td, "spwd", "data.yml") {
+	if cfg.DataFile != filepath.Join(td, "spwd", "data.dat") {
 		t.Errorf("default data file path is invalid, got %s", cfg.KeyFile)
 	}
 }
@@ -133,7 +133,7 @@ func TestFileConfigOnFileExist(t *testing.T) {
 		t.Error(err)
 	}
 	f.WriteString(`key_file: /tmp/config.yml
-data_file: /tmp/data.yml
+data_file: /tmp/data.dat
 `)
 	cfg, ok := FileConfig()
 	if !ok {

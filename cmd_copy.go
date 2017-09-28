@@ -23,7 +23,11 @@ func runCopy(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}
@@ -31,16 +35,7 @@ func runCopy(ctx context, args []string) error {
 	if it == nil {
 		return fmt.Errorf("item not found: %s", args[0])
 	}
-
-	key, err := GetKey(cfg.KeyFile)
-	if err != nil {
-		return err
-	}
-	pwd, err := Decrypt(key, it.Encrypted)
-	if err != nil {
-		return err
-	}
-	clipboard.WriteAll(pwd)
+	clipboard.WriteAll(it.Password)
 	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' copy to clipboard successfully", it.Name))
 	return nil
 }

@@ -19,7 +19,11 @@ func runList(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}

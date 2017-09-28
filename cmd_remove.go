@@ -21,7 +21,11 @@ func runRemove(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}
@@ -38,7 +42,7 @@ func runRemove(ctx context, args []string) error {
 			nis = append(nis, it)
 		}
 	}
-	nis.Save(cfg.DataFile)
+	nis.Save(key, cfg.DataFile)
 	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' is removed successfully", name))
 	return nil
 }

@@ -3,19 +3,20 @@ package main
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
 var testItems = Items{
 	Item{
 		Name:        "foo",
-		Description: "1",
-		Encrypted:   "AAA",
+		Description: "This is test password",
+		Password:    "foopassword",
 	},
 	Item{
 		Name:        "bar",
-		Description: "2",
-		Encrypted:   "BBB",
+		Description: "This is another password",
+		Password:    "barpassword",
 	},
 }
 
@@ -26,9 +27,11 @@ func TestFindOnNameMatched(t *testing.T) {
 		t.Error("item not found")
 	}
 
-	if i.Description != "1" {
+	if i.Description != "This is test password" {
 		t.Errorf("unexpected item found: %+v", i)
 	}
+	// key, _ := GetKey(filepath.Join("testdata", "key_file"))
+	// testItems.Save(key, "testdata/data.dat")
 }
 
 func TestFindOnNameUnmatched(t *testing.T) {
@@ -40,60 +43,44 @@ func TestFindOnNameUnmatched(t *testing.T) {
 }
 
 func TestSave(t *testing.T) {
-	tf, _ := ioutil.TempFile("", "")
+	td, _ := ioutil.TempDir("", "")
 	defer func() {
-		tf.Close()
-		os.Remove(tf.Name())
+		os.Remove(td)
 	}()
 
-	testItems.Save(tf.Name())
-	p, err := ioutil.ReadAll(tf)
+	key, err := GetKey(filepath.Join("testdata", "key_file"))
 	if err != nil {
 		t.Error(err)
 	}
-	yml := `- name: foo
-  description: "1"
-  encrypted: AAA
-- name: bar
-  description: "2"
-  encrypted: BBB
-`
-	if string(p) != yml {
-		t.Errorf("saved yaml text is invalid: %s", string(p))
+	path := filepath.Join(td, "data.dat")
+	testItems.Save(key, path)
+	if _, err := os.Stat(path); err != nil {
+		t.Error(err)
 	}
 }
 
 func TestLoadItems(t *testing.T) {
-	tf, _ := ioutil.TempFile("", "")
-	defer func() {
-		tf.Close()
-		os.Remove(tf.Name())
-	}()
-	tf.WriteString(`- name: foo
-  description: "1"
-  encrypted: AAA
-- name: bar
-  description: "2"
-  encrypted: BBB
-`)
-
-	is, err := LoadItems(tf.Name())
+	key, err := GetKey(filepath.Join("testdata", "key_file"))
+	if err != nil {
+		t.Error(err)
+	}
+	is, err := LoadItems(key, filepath.Join("testdata", "data.dat"))
 	if err != nil {
 		t.Error(err)
 	}
 	i := is.Find("foo")
 
-	if i.Description != "1" {
+	if i.Description != "This is test password" {
 		t.Error("LoadItems is failure")
 	}
 }
 
 func TestLoadItemsWithNotExistFile(t *testing.T) {
-	tf, _ := ioutil.TempFile("", "")
-	tf.Close()
-	os.Remove(tf.Name())
-
-	is, err := LoadItems(tf.Name())
+	key, err := GetKey(filepath.Join("testdata", "key_file"))
+	if err != nil {
+		t.Error(err)
+	}
+	is, err := LoadItems(key, filepath.Join("testdata", "not_exist.dat"))
 	if err != nil {
 		t.Error(err)
 	}

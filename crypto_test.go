@@ -38,7 +38,7 @@ func TestEncryptAndDecrypt(t *testing.T) {
 	key := GenKey([]byte("this is crypto key"))
 	pwd := "password"
 
-	e, err := Encrypt(key, pwd)
+	e, err := Encrypt(key, []byte(pwd))
 	if err != nil {
 		t.Error(err)
 	}
@@ -47,13 +47,13 @@ func TestEncryptAndDecrypt(t *testing.T) {
 		t.Error(err)
 	}
 
-	if d != pwd {
+	if string(d) != pwd {
 		t.Errorf("Decrypt failure: %s", d)
 	}
 }
 
 func TestEncryptWithInvalidKey(t *testing.T) {
-	_, err := Encrypt([]byte("foobar"), "password")
+	_, err := Encrypt([]byte("foobar"), []byte("password"))
 	if err == nil {
 		t.Error("Encrypt with invalid key should raise error")
 	}
@@ -71,7 +71,7 @@ func TestCannotDecryptWithOtherKey(t *testing.T) {
 	k2 := GenKey([]byte("this is other key"))
 	pwd := "password"
 
-	e, err := Encrypt(k1, pwd)
+	e, err := Encrypt(k1, []byte(pwd))
 	if err != nil {
 		t.Error(err)
 	}
@@ -80,7 +80,7 @@ func TestCannotDecryptWithOtherKey(t *testing.T) {
 		t.Error(err)
 	}
 
-	if d == pwd {
+	if string(d) == pwd {
 		t.Errorf("Decrypt with other key should fail")
 	}
 }

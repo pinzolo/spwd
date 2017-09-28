@@ -13,7 +13,7 @@ var cmdMigrate = &Command{
 }
 
 // MigrateFileName is file name that created with migrate subcommand.
-const MigrateFileName = "spwd-migrated.yml"
+const MigrateFileName = "spwd-migrated.dat"
 
 func runMigrate(ctx context, args []string) error {
 	if len(args) == 0 {
@@ -24,7 +24,11 @@ func runMigrate(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}
@@ -34,30 +38,11 @@ func runMigrate(ctx context, args []string) error {
 		return nil
 	}
 
-	key, err := GetKey(cfg.KeyFile)
-	if err != nil {
-		return err
-	}
 	nkey, err := GetKey(args[0])
 	if err != nil {
 		return err
 	}
-
-	nis := Items(make([]Item, len(is)))
-	var pwd, enc string
-	for i, it := range is {
-		pwd, err = Decrypt(key, it.Encrypted)
-		if err != nil {
-			return err
-		}
-		enc, err = Encrypt(nkey, pwd)
-		if err != nil {
-			return err
-		}
-		nis[i] = NewItem(it.Name, it.Description, enc)
-	}
-
-	err = nis.Save(MigrateFileName)
+	err = is.Save(nkey, MigrateFileName)
 	if err != nil {
 		return err
 	}

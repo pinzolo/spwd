@@ -25,7 +25,11 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	is, err := LoadItems(cfg.DataFile)
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return err
+	}
+	is, err := LoadItems(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}
@@ -34,12 +38,7 @@ func runNew(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	key, err := GetKey(cfg.KeyFile)
-	if err != nil {
-		return err
-	}
-	enc, err := Encrypt(key, string(pwd))
-	nit := NewItem(name, desc, enc)
+	nit := NewItem(name, desc, pwd)
 	if err != nil {
 		return err
 	}
@@ -56,7 +55,7 @@ func runNew(ctx context, args []string) error {
 		is = append(is, nit)
 	}
 
-	err = is.Save(cfg.DataFile)
+	err = is.Save(key, cfg.DataFile)
 	if err != nil {
 		return err
 	}

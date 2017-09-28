@@ -26,7 +26,7 @@ If config file is not found, `spwd` using below configuration as default.
 
 ```yml
 key_file: /home/you/.ssh/id_rsa
-data_file: /home/you/.local/share/spwd/data.yml
+data_file: /home/you/.local/share/spwd/data.dat
 ```
 
 ## Install
