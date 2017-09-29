@@ -7,7 +7,7 @@ import (
 
 var cmdMigrate = &Command{
 	Run:       runMigrate,
-	UsageLine: "migrate",
+	UsageLine: "migrate NEW_KEY_FILE",
 	Short:     "Regenerate data file",
 	Long:      `Regenerate data file with new key file.`,
 }
