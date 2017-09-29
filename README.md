@@ -8,8 +8,9 @@
 
 Secret file based password management tool.
 
-Save your password interactively with `new` subcommand.  
-Input password is encrypted with AES-256 using your secret file.
+Save your password interactively with `spwd new`.  
+Input password is encrypted with AES-256 using your secret file.  
+Decrypt and copy password to clipboard with `spwd copy <NAME>`.
 
 ## Screenshot
 
@@ -26,7 +27,7 @@ key_file: /path/to/your/secret/file
 data_file: /path/to/your/data/file
 ```
 
-If config file is not found, `spwd` using below configuration as default.
+If config file is not found, use below configuration as default.
 
 ```yml
 key_file: ~/.ssh/id_rsa
