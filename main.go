@@ -56,6 +56,7 @@ var commands = []*Command{
 	cmdMigrate,
 	cmdNew,
 	cmdRemove,
+	cmdVersion,
 }
 
 func main() {
