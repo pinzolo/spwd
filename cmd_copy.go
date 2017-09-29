@@ -16,7 +16,7 @@ var cmdCopy = &Command{
 
 func runCopy(ctx context, args []string) error {
 	if len(args) == 0 {
-		return errors.New("item name required")
+		return errors.New("item name is required")
 	}
 	cfg, err := GetConfig()
 	if err != nil {
@@ -36,6 +36,6 @@ func runCopy(ctx context, args []string) error {
 		return fmt.Errorf("item not found: %s", args[0])
 	}
 	clipboard.WriteAll(it.Password)
-	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' copy to clipboard successfully", it.Name))
+	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", it.Name)
 	return nil
 }

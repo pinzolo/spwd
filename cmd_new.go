@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -59,7 +60,7 @@ func runNew(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(fmt.Sprintf("item '%s' saved!!", name))
+	PrintSuccess(ctx.out, "password of '%s' is saved successfully", name)
 	return nil
 }
 
@@ -71,6 +72,10 @@ func scan() (name string, desc string, pwd string, err error) {
 		return
 	}
 	name = in.Text()
+	if name == "" {
+		err = errors.New("name is required")
+		return
+	}
 	fmt.Print("Description: ")
 	in.Scan()
 	if err = in.Err(); err != nil {
@@ -84,6 +89,9 @@ func scan() (name string, desc string, pwd string, err error) {
 		return
 	}
 	pwd = string(p)
+	if pwd == "" {
+		err = errors.New("password is required")
+	}
 	fmt.Println()
 	return
 }

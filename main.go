@@ -84,7 +84,7 @@ func main() {
 			err := cmd.Run(newContext(ow), args)
 			code := 0
 			if err != nil {
-				fmt.Fprintln(os.Stderr, err)
+				PrintError(os.Stderr, err)
 				code = 2
 			}
 			ow.Flush()

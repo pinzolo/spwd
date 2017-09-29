@@ -17,7 +17,7 @@ const MigrateFileName = "spwd-migrated.dat"
 
 func runMigrate(ctx context, args []string) error {
 	if len(args) == 0 {
-		return errors.New("new key file required")
+		return errors.New("new key file is required")
 	}
 	cfg, err := GetConfig()
 	if err != nil {
@@ -46,6 +46,6 @@ func runMigrate(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintln(ctx.out, fmt.Sprintf("new data file saved as %s successfully", MigrateFileName))
+	PrintSuccess(ctx.out, "new data file saved as %s successfully", MigrateFileName)
 	return nil
 }

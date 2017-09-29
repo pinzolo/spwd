@@ -14,7 +14,7 @@ var cmdRemove = &Command{
 
 func runRemove(ctx context, args []string) error {
 	if len(args) == 0 {
-		return errors.New("item name required")
+		return errors.New("item name is required")
 	}
 	cfg, err := GetConfig()
 	if err != nil {
@@ -43,6 +43,6 @@ func runRemove(ctx context, args []string) error {
 		}
 	}
 	nis.Save(key, cfg.DataFile)
-	fmt.Fprintln(ctx.out, fmt.Sprintf("password of '%s' is removed successfully", name))
+	PrintSuccess(ctx.out, "password of '%s' is removed successfully", name)
 	return nil
 }
