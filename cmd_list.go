@@ -33,17 +33,12 @@ func runList(ctx context, args []string) error {
 		return nil
 	}
 
-	data := make([][]string, len(is))
-	for i, it := range is {
-		data[i] = []string{it.Name, it.Description}
-	}
-
 	tw := tablewriter.NewWriter(ctx.out)
 	tw.SetHeader([]string{"Name", "Description"})
 	tw.SetColumnSeparator("")
 	tw.SetCenterSeparator(" ")
 	tw.SetBorder(false)
-	tw.AppendBulk(data)
+	tw.AppendBulk(is.ToDataTable())
 	tw.Render()
 	return nil
 }
