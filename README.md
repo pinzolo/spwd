@@ -25,6 +25,8 @@ If `~/.config/spwd/config.yml` exists, use it.
 key_file: /path/to/your/secret/file
 # data file path
 data_file: /path/to/your/data/file
+# command used with `search` subcommand.
+filtering_command: fzf
 ```
 
 If config file is not found, use below configuration as default.
@@ -32,6 +34,7 @@ If config file is not found, use below configuration as default.
 ```yml
 key_file: ~/.ssh/id_rsa
 data_file: ~/.local/share/spwd/data.dat
+filtering_command: peco
 ```
 
 ## Install
