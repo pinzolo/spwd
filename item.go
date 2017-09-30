@@ -92,3 +92,12 @@ func (is Items) Update(nit Item) Items {
 	}
 	return nis
 }
+
+// ToDataTable returns data for tablewriter.
+func (is Items) ToDataTable() [][]string {
+	data := make([][]string, len(is))
+	for i, it := range is {
+		data[i] = []string{it.Name, it.Description}
+	}
+	return data
+}

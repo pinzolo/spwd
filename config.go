@@ -18,6 +18,8 @@ type Config struct {
 	KeyFile string `yaml:"key_file"`
 	// DataFile is file path of storing encrypted passwords.
 	DataFile string `yaml:"data_file"`
+	// FilteringCommand is command for filtering in search subcommand.
+	FilteringCommand string `yaml:"filtering_command"`
 }
 
 // GetConfig return merged configuration.
@@ -36,14 +38,18 @@ func GetConfig() (Config, error) {
 // Merge config values and returns new Config.
 func (cfg Config) Merge(other Config) Config {
 	newCfg := Config{
-		KeyFile:  cfg.KeyFile,
-		DataFile: cfg.DataFile,
+		KeyFile:          cfg.KeyFile,
+		DataFile:         cfg.DataFile,
+		FilteringCommand: cfg.FilteringCommand,
 	}
 	if other.KeyFile != "" {
 		newCfg.KeyFile = other.KeyFile
 	}
 	if other.DataFile != "" {
 		newCfg.DataFile = other.DataFile
+	}
+	if other.FilteringCommand != "" {
+		newCfg.FilteringCommand = other.FilteringCommand
 	}
 	return newCfg
 }
@@ -55,8 +61,9 @@ func DefaultConfig() (Config, error) {
 		return Config{}, err
 	}
 	return Config{
-		KeyFile:  filepath.Join(homeDir(), ".ssh", "id_rsa"),
-		DataFile: df,
+		KeyFile:          filepath.Join(homeDir(), ".ssh", "id_rsa"),
+		DataFile:         df,
+		FilteringCommand: "peco",
 	}, nil
 }
 
