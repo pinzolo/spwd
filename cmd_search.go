@@ -25,11 +25,7 @@ func runSearch(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	key, err := GetKey(cfg.KeyFile)
-	if err != nil {
-		return err
-	}
-	is, err := LoadItems(key, cfg.DataFile)
+	is, err := LoadItemsWithConfig(cfg)
 	if err != nil {
 		return err
 	}

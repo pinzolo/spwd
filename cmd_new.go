@@ -65,30 +65,13 @@ func runNew(ctx context, args []string) error {
 }
 
 func scan() (name string, desc string, pwd string, err error) {
-	in := bufio.NewScanner(os.Stdin)
-	fmt.Print("Name: ")
-	in.Scan()
-	if err = in.Err(); err != nil {
-		return
-	}
-	name = in.Text()
+	name, err = scanText("Name: ")
 	if name == "" {
 		err = errors.New("name is required")
 		return
 	}
-	fmt.Print("Description: ")
-	in.Scan()
-	if err = in.Err(); err != nil {
-		return
-	}
-	desc = in.Text()
-	fmt.Print("Password: ")
-	var p []byte
-	p, err = terminal.ReadPassword(int(syscall.Stdin))
-	if err != nil {
-		return
-	}
-	pwd = string(p)
+	desc, err = scanText("Description: ")
+	pwd, err = scanPassword("Password: ")
 	if pwd == "" {
 		err = errors.New("password is required")
 	}
@@ -96,13 +79,39 @@ func scan() (name string, desc string, pwd string, err error) {
 	return
 }
 
+func scanText(prompt string) (string, error) {
+	if prompt != "" {
+		fmt.Print(prompt)
+	}
+	in := bufio.NewScanner(os.Stdin)
+	in.Scan()
+	if err := in.Err(); err != nil {
+		return "", err
+	}
+	return in.Text(), nil
+}
+
 func scanBool(prompt string) (bool, error) {
-	fmt.Print(prompt)
+	if prompt != "" {
+		fmt.Print(prompt)
+	}
 	in := bufio.NewScanner(os.Stdin)
 	in.Scan()
 	if err := in.Err(); err != nil {
 		return false, err
 	}
+	inText := strings.ToLower(in.Text())
 
-	return strings.ToLower(in.Text()) == "y", nil
+	return inText == "y" || inText == "yes", nil
+}
+
+func scanPassword(prompt string) (string, error) {
+	if prompt != "" {
+		fmt.Print(prompt)
+	}
+	p, err := terminal.ReadPassword(int(syscall.Stdin))
+	if err != nil {
+		return "", err
+	}
+	return string(p), nil
 }

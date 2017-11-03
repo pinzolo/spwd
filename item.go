@@ -17,11 +17,11 @@ type Item struct {
 }
 
 // NewItem returns new item that initialized give values.
-func NewItem(name string, desc string, enc string) Item {
+func NewItem(name string, desc string, pwd string) Item {
 	return Item{
 		Name:        name,
 		Description: desc,
-		Password:    enc,
+		Password:    pwd,
 	}
 }
 
@@ -30,9 +30,9 @@ type Items []Item
 
 // Find item that has given keyword.
 func (is Items) Find(name string) *Item {
-	for _, i := range is {
-		if name == i.Name {
-			return &i
+	for _, it := range is {
+		if name == it.Name {
+			return &it
 		}
 	}
 	return nil
@@ -59,6 +59,15 @@ func LoadItems(key []byte, path string) (Items, error) {
 		return nil, err
 	}
 	return is, nil
+}
+
+// LoadItemsWithConfig load items using given config.
+func LoadItemsWithConfig(cfg Config) (Items, error) {
+	key, err := GetKey(cfg.KeyFile)
+	if err != nil {
+		return nil, err
+	}
+	return LoadItems(key, cfg.DataFile)
 }
 
 // Save items to file on given path.
