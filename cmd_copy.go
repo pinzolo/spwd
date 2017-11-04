@@ -27,6 +27,15 @@ func runCopy(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
+	if is.HasMaster() {
+		pwd, err := scanPassword("Master password: ")
+		if err != nil {
+			return err
+		}
+		if is.Master().Password != pwd {
+			return errMasterPasswordNotMatch
+		}
+	}
 	it := is.Find(args[0])
 	if it == nil {
 		return fmt.Errorf("item not found: %s", args[0])

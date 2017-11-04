@@ -18,6 +18,8 @@ If master password already exists, you can update or delete it.
 `,
 }
 
+var errMasterPasswordNotMatch = errors.New("master password is not matched")
+
 func runMaster(ctx context, args []string) error {
 	rand.Seed(time.Now().UnixNano())
 	cfg, err := GetConfig()
@@ -48,7 +50,7 @@ func runMaster(ctx context, args []string) error {
 		}
 		mst := is.Master()
 		if mst.Password != pwd {
-			return errors.New("master password is not matched")
+			return errMasterPasswordNotMatch
 		}
 		if isDeleteMasterMethod(method) {
 			is = is.Remove(mst.Name)
