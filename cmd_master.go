@@ -56,7 +56,7 @@ func runMaster(ctx context, args []string) error {
 			is = is.Remove(mst.Name)
 			msg = "master password is deleted successfully"
 		} else {
-			newPwd, err := scanPassword("Current master password: ")
+			newPwd, err := scanPassword("New master password: ")
 			if err != nil {
 				return err
 			}
