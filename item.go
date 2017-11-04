@@ -126,9 +126,12 @@ func (is Items) Remove(name string) Items {
 
 // ToDataTable returns data for tablewriter.
 func (is Items) ToDataTable() [][]string {
-	data := make([][]string, len(is))
-	for i, it := range is {
-		data[i] = []string{it.Name, it.Description}
+	var data [][]string
+	for _, it := range is {
+		if it.Master {
+			continue
+		}
+		data = append(data, []string{it.Name, it.Description})
 	}
 	return data
 }
