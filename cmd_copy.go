@@ -28,12 +28,8 @@ func runCopy(ctx context, args []string) error {
 		return err
 	}
 	if is.HasMaster() {
-		pwd, err := scanPassword("Master password: ")
-		if err != nil {
+		if err = confirmMasterPassword(is.Master()); err != nil {
 			return err
-		}
-		if is.Master().Password != pwd {
-			return errMasterPasswordNotMatch
 		}
 	}
 	it := is.Find(args[0])
@@ -42,5 +38,16 @@ func runCopy(ctx context, args []string) error {
 	}
 	clipboard.WriteAll(it.Password)
 	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", it.Name)
+	return nil
+}
+
+func confirmMasterPassword(it *Item) error {
+	pwd, err := scanPassword("Master password: ")
+	if err != nil {
+		return err
+	}
+	if it.Password != pwd {
+		return errMasterPasswordNotMatch
+	}
 	return nil
 }
