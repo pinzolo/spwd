@@ -24,6 +24,12 @@ func runList(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	if len(is) == 0 {
 		fmt.Fprintln(ctx.out, "no password.")
 		return nil
