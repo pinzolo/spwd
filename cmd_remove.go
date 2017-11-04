@@ -38,7 +38,7 @@ func runRemove(ctx context, args []string) error {
 
 	name := args[0]
 	fit := is.Find(name)
-	if fit == nil {
+	if fit == nil || fit.Master {
 		return fmt.Errorf("item not found: %s", name)
 	}
 
