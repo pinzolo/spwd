@@ -30,6 +30,12 @@ func runSearch(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	if len(is) == 0 {
 		fmt.Fprintln(ctx.out, "no password.")
 		return nil
@@ -41,7 +47,8 @@ func runSearch(ctx context, args []string) error {
 		return err
 	}
 	name := strings.TrimSpace(strings.Split(buf.String(), "|")[0])
-	return runCopy(ctx, []string{name})
+	findAndCopy(ctx, is, name)
+	return nil
 }
 
 func filteringText(is Items) string {

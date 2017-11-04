@@ -32,12 +32,7 @@ func runCopy(ctx context, args []string) error {
 			return err
 		}
 	}
-	it := is.Find(args[0])
-	if it == nil || it.Master {
-		return fmt.Errorf("item not found: %s", args[0])
-	}
-	clipboard.WriteAll(it.Password)
-	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", it.Name)
+	findAndCopy(ctx, is, args[0])
 	return nil
 }
 
@@ -49,5 +44,15 @@ func confirmMasterPassword(it *Item) error {
 	if it.Password != pwd {
 		return errMasterPasswordNotMatch
 	}
+	return nil
+}
+
+func findAndCopy(ctx context, is Items, name string) error {
+	it := is.Find(name)
+	if it == nil || it.Master {
+		return fmt.Errorf("item not found: %s", name)
+	}
+	clipboard.WriteAll(it.Password)
+	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", it.Name)
 	return nil
 }
