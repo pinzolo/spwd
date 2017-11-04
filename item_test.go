@@ -20,6 +20,32 @@ var testItems = Items{
 	},
 }
 
+func TestNewItem(t *testing.T) {
+	it := NewItem("baz", "This is extra password", "bazpassword")
+	if it.Name != "baz" {
+		t.Errorf("new item should have '%s' as name, but got '%s", "baz", it.Name)
+	}
+	if it.Description != "This is extra password" {
+		t.Errorf("new item should have '%s' as description, but got '%s", "This is extra password", it.Description)
+	}
+	if it.Password != "bazpassword" {
+		t.Errorf("new item should have '%s' as password, but got '%s", "bazpassword", it.Password)
+	}
+}
+
+func TestNewMasterItem(t *testing.T) {
+	it := NewMasterItem("master", "masterpassword")
+	if it.Name != "master" {
+		t.Errorf("new master item should have '%s' as name, but got '%s", "master", it.Name)
+	}
+	if it.Description != "" {
+		t.Errorf("new master item should have empty description, but got '%s", it.Description)
+	}
+	if it.Password != "masterpassword" {
+		t.Errorf("new master item should have '%s' as password, but got '%s", "masterpassword", it.Password)
+	}
+}
+
 func TestFindOnNameMatched(t *testing.T) {
 	i := testItems.Find("foo")
 
@@ -86,5 +112,28 @@ func TestLoadItemsWithNotExistFile(t *testing.T) {
 	}
 	if len(is) != 0 {
 		t.Error("LoadItems should return empty items when file does not exist")
+	}
+}
+
+func TestHasMaster(t *testing.T) {
+	if testItems.HasMaster() {
+		t.Error("items that do not have master item should return false")
+	}
+
+	newItems := Items(append(testItems, NewMasterItem("master", "masterpassword")))
+	if !newItems.HasMaster() {
+		t.Error("items that have master item should return true")
+	}
+}
+
+func TestMaster(t *testing.T) {
+	if testItems.Master() != nil {
+		t.Error("items that do not have master item should return nil")
+	}
+
+	newItems := Items(append(testItems, NewMasterItem("master", "masterpassword")))
+	master := newItems.Master()
+	if master == nil || master.Name != "master" || master.Password != "masterpassword" {
+		t.Error("items that have master item should return master item")
 	}
 }

@@ -1,14 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"os"
-	"strings"
-	"syscall"
-
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 var cmdNew = &Command{
@@ -40,9 +34,6 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 	nit := NewItem(name, desc, pwd)
-	if err != nil {
-		return err
-	}
 	if it := is.Find(name); it != nil {
 		b, berr := scanBool(fmt.Sprintf("item '%s' already exists, update? [y/N]: ", name))
 		if berr != nil {
@@ -77,41 +68,4 @@ func scan() (name string, desc string, pwd string, err error) {
 	}
 	fmt.Println()
 	return
-}
-
-func scanText(prompt string) (string, error) {
-	if prompt != "" {
-		fmt.Print(prompt)
-	}
-	in := bufio.NewScanner(os.Stdin)
-	in.Scan()
-	if err := in.Err(); err != nil {
-		return "", err
-	}
-	return in.Text(), nil
-}
-
-func scanBool(prompt string) (bool, error) {
-	if prompt != "" {
-		fmt.Print(prompt)
-	}
-	in := bufio.NewScanner(os.Stdin)
-	in.Scan()
-	if err := in.Err(); err != nil {
-		return false, err
-	}
-	inText := strings.ToLower(in.Text())
-
-	return inText == "y" || inText == "yes", nil
-}
-
-func scanPassword(prompt string) (string, error) {
-	if prompt != "" {
-		fmt.Print(prompt)
-	}
-	p, err := terminal.ReadPassword(int(syscall.Stdin))
-	if err != nil {
-		return "", err
-	}
-	return string(p), nil
 }

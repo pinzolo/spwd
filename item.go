@@ -14,6 +14,8 @@ type Item struct {
 	Description string `yaml:"description"`
 	// Password text.
 	Password string `yaml:"password"`
+	// Master password flag.
+	Master bool `yaml:"master"`
 }
 
 // NewItem returns new item that initialized give values.
@@ -22,6 +24,15 @@ func NewItem(name string, desc string, pwd string) Item {
 		Name:        name,
 		Description: desc,
 		Password:    pwd,
+	}
+}
+
+// NewMasterItem returns new item for master password.
+func NewMasterItem(name string, pwd string) Item {
+	return Item{
+		Name:     name,
+		Password: pwd,
+		Master:   true,
 	}
 }
 
@@ -102,6 +113,17 @@ func (is Items) Update(nit Item) Items {
 	return nis
 }
 
+// Remove item that has given name.
+func (is Items) Remove(name string) Items {
+	nis := Items([]Item{})
+	for _, it := range is {
+		if it.Name != name {
+			nis = append(nis, it)
+		}
+	}
+	return nis
+}
+
 // ToDataTable returns data for tablewriter.
 func (is Items) ToDataTable() [][]string {
 	data := make([][]string, len(is))
@@ -109,4 +131,24 @@ func (is Items) ToDataTable() [][]string {
 		data[i] = []string{it.Name, it.Description}
 	}
 	return data
+}
+
+// HasMaster returns that contains master item.
+func (is Items) HasMaster() bool {
+	for _, it := range is {
+		if it.Master {
+			return true
+		}
+	}
+	return false
+}
+
+// Master returns master item.
+func (is Items) Master() *Item {
+	for _, it := range is {
+		if it.Master {
+			return &it
+		}
+	}
+	return nil
 }

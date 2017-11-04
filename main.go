@@ -54,6 +54,7 @@ var commands = []*Command{
 	cmdCopy,
 	cmdList,
 	cmdMigrate,
+	cmdMaster,
 	cmdNew,
 	cmdRemove,
 	cmdSearch,
