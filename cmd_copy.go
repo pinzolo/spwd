@@ -37,7 +37,7 @@ func runCopy(ctx context, args []string) error {
 		}
 	}
 	it := is.Find(args[0])
-	if it == nil {
+	if it == nil || it.Master {
 		return fmt.Errorf("item not found: %s", args[0])
 	}
 	clipboard.WriteAll(it.Password)
