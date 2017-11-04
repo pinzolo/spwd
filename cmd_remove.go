@@ -30,6 +30,12 @@ func runRemove(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	name := args[0]
 	fit := is.Find(name)
 	if fit == nil {
