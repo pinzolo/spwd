@@ -19,13 +19,15 @@ func runList(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	key, err := GetKey(cfg.KeyFile)
+	is, err := LoadItemsWithConfig(cfg)
 	if err != nil {
 		return err
 	}
-	is, err := LoadItems(key, cfg.DataFile)
-	if err != nil {
-		return err
+
+	if is.HasMaster() && cfg.IsProtective(ctx.cmdName) {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
 	}
 
 	if len(is) == 0 {

@@ -25,13 +25,15 @@ func runSearch(ctx context, args []string) error {
 		return err
 	}
 	Initialize(cfg)
-	key, err := GetKey(cfg.KeyFile)
+	is, err := LoadItemsWithConfig(cfg)
 	if err != nil {
 		return err
 	}
-	is, err := LoadItems(key, cfg.DataFile)
-	if err != nil {
-		return err
+
+	if is.HasMaster() {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
 	}
 
 	if len(is) == 0 {
@@ -45,7 +47,9 @@ func runSearch(ctx context, args []string) error {
 		return err
 	}
 	name := strings.TrimSpace(strings.Split(buf.String(), "|")[0])
-	return runCopy(ctx, []string{name})
+	findAndCopy(ctx, is, name)
+	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", name)
+	return nil
 }
 
 func filteringText(is Items) string {

@@ -1,14 +1,8 @@
 package main
 
 import (
-	"bufio"
 	"errors"
 	"fmt"
-	"os"
-	"strings"
-	"syscall"
-
-	"golang.org/x/crypto/ssh/terminal"
 )
 
 var cmdNew = &Command{
@@ -35,14 +29,17 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() && cfg.IsProtective(ctx.cmdName) {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	name, desc, pwd, err := scan()
 	if err != nil {
 		return err
 	}
 	nit := NewItem(name, desc, pwd)
-	if err != nil {
-		return err
-	}
 	if it := is.Find(name); it != nil {
 		b, berr := scanBool(fmt.Sprintf("item '%s' already exists, update? [y/N]: ", name))
 		if berr != nil {
@@ -65,44 +62,16 @@ func runNew(ctx context, args []string) error {
 }
 
 func scan() (name string, desc string, pwd string, err error) {
-	in := bufio.NewScanner(os.Stdin)
-	fmt.Print("Name: ")
-	in.Scan()
-	if err = in.Err(); err != nil {
-		return
-	}
-	name = in.Text()
+	name, err = scanText("Name: ")
 	if name == "" {
 		err = errors.New("name is required")
 		return
 	}
-	fmt.Print("Description: ")
-	in.Scan()
-	if err = in.Err(); err != nil {
-		return
-	}
-	desc = in.Text()
-	fmt.Print("Password: ")
-	var p []byte
-	p, err = terminal.ReadPassword(int(syscall.Stdin))
-	if err != nil {
-		return
-	}
-	pwd = string(p)
+	desc, err = scanText("Description: ")
+	pwd, err = scanPassword("Password: ")
 	if pwd == "" {
 		err = errors.New("password is required")
 	}
 	fmt.Println()
 	return
-}
-
-func scanBool(prompt string) (bool, error) {
-	fmt.Print(prompt)
-	in := bufio.NewScanner(os.Stdin)
-	in.Scan()
-	if err := in.Err(); err != nil {
-		return false, err
-	}
-
-	return strings.ToLower(in.Text()) == "y", nil
 }

@@ -30,9 +30,15 @@ func runRemove(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() && cfg.IsProtective(ctx.cmdName) {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	name := args[0]
 	fit := is.Find(name)
-	if fit == nil {
+	if fit == nil || fit.Master {
 		return fmt.Errorf("item not found: %s", name)
 	}
 

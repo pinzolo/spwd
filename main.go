@@ -54,6 +54,7 @@ var commands = []*Command{
 	cmdCopy,
 	cmdList,
 	cmdMigrate,
+	cmdMaster,
 	cmdNew,
 	cmdRemove,
 	cmdSearch,
@@ -83,7 +84,7 @@ func main() {
 			args = cmd.Flag.Args()
 
 			ow := bufio.NewWriter(os.Stdout)
-			err := cmd.Run(newContext(ow), args)
+			err := cmd.Run(newContext(ow, cmd.Name()), args)
 			code := 0
 			if err != nil {
 				PrintError(os.Stderr, err)

@@ -8,7 +8,7 @@ import (
 
 func TestCmdVersion(t *testing.T) {
 	out := &bytes.Buffer{}
-	ctx := newContext(out)
+	ctx := newContext(out, "version")
 	err := cmdVersion.Run(ctx, []string{})
 	if err != nil {
 		t.Error(err)

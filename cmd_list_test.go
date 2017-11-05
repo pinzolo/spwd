@@ -21,7 +21,7 @@ func TestCmdList(t *testing.T) {
 	}
 	defer teardown()
 	out := &bytes.Buffer{}
-	ctx := newContext(out)
+	ctx := newContext(out, "list")
 	err = cmdList.Run(ctx, []string{})
 	if err != nil {
 		t.Error(err)
