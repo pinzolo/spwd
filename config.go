@@ -20,6 +20,8 @@ type Config struct {
 	DataFile string `yaml:"data_file"`
 	// FilteringCommand is command for filtering in search subcommand.
 	FilteringCommand string `yaml:"filtering_command"`
+	// UnprotectiveCommands are commands that are not protected with master password.
+	UnprotectiveCommands []string `yaml:"unprotective_commands"`
 }
 
 // GetConfig return merged configuration.
@@ -51,7 +53,24 @@ func (cfg Config) Merge(other Config) Config {
 	if other.FilteringCommand != "" {
 		newCfg.FilteringCommand = other.FilteringCommand
 	}
+	if len(other.UnprotectiveCommands) != 0 {
+		newCfg.UnprotectiveCommands = other.UnprotectiveCommands
+	}
 	return newCfg
+}
+
+// IsProtective returns whether given command is a command to protect.
+// copy and search are always protected.
+func (cfg Config) IsProtective(cmd string) bool {
+	if cmd == "copy" || cmd == "search" {
+		return true
+	}
+	for _, c := range cfg.UnprotectiveCommands {
+		if c == cmd {
+			return false
+		}
+	}
+	return true
 }
 
 // DefaultConfig return sefault configuration.

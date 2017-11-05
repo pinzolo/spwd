@@ -48,6 +48,7 @@ func runSearch(ctx context, args []string) error {
 	}
 	name := strings.TrimSpace(strings.Split(buf.String(), "|")[0])
 	findAndCopy(ctx, is, name)
+	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", name)
 	return nil
 }
 

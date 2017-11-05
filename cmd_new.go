@@ -29,6 +29,12 @@ func runNew(ctx context, args []string) error {
 		return err
 	}
 
+	if is.HasMaster() && cfg.IsProtective(ctx.cmdName) {
+		if err = confirmMasterPassword(is.Master()); err != nil {
+			return err
+		}
+	}
+
 	name, desc, pwd, err := scan()
 	if err != nil {
 		return err

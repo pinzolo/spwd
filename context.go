@@ -3,11 +3,13 @@ package main
 import "io"
 
 type context struct {
-	out io.Writer
+	out     io.Writer
+	cmdName string
 }
 
-func newContext(ow io.Writer) context {
+func newContext(ow io.Writer, cmdName string) context {
 	return context{
-		out: ow,
+		out:     ow,
+		cmdName: cmdName,
 	}
 }

@@ -33,6 +33,7 @@ func runCopy(ctx context, args []string) error {
 		}
 	}
 	findAndCopy(ctx, is, args[0])
+	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", args[0])
 	return nil
 }
 
@@ -53,6 +54,5 @@ func findAndCopy(ctx context, is Items, name string) error {
 		return fmt.Errorf("item not found: %s", name)
 	}
 	clipboard.WriteAll(it.Password)
-	PrintSuccess(ctx.out, "password of '%s' is copied to clipboard successfully", it.Name)
 	return nil
 }
