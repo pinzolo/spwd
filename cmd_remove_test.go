@@ -14,7 +14,7 @@ func TestCmdRemove(t *testing.T) {
 	}
 	defer teardown()
 	out := &bytes.Buffer{}
-	ctx := newContext(out)
+	ctx := newContext(out, "remove")
 	err = cmdRemove.Run(ctx, []string{"foo"})
 	if err != nil {
 		t.Error(err)
@@ -47,7 +47,7 @@ func TestCmdRemoveWithUnknownName(t *testing.T) {
 	}
 	defer teardown()
 	out := &bytes.Buffer{}
-	ctx := newContext(out)
+	ctx := newContext(out, "remove")
 	err = cmdRemove.Run(ctx, []string{"baz"})
 	if err == nil {
 		t.Error("remove with unknown name should rase error")

@@ -22,7 +22,7 @@ func TestCmdMigrate(t *testing.T) {
 		}
 	}()
 	out := &bytes.Buffer{}
-	err = cmdMigrate.Run(newContext(out), []string{"testdata/other_key"})
+	err = cmdMigrate.Run(newContext(out, "migrate"), []string{"testdata/other_key"})
 	if err != nil {
 		t.Error(err)
 	}
@@ -57,7 +57,7 @@ func TestCmdMigrateWithNotExistOtherKeyFile(t *testing.T) {
 		}
 	}()
 	out := &bytes.Buffer{}
-	err = cmdMigrate.Run(newContext(out), []string{"testdata/not_exist"})
+	err = cmdMigrate.Run(newContext(out, "migrate"), []string{"testdata/not_exist"})
 	if err == nil {
 		t.Error("Migrate with not exist other key file should raise error")
 	}
@@ -78,7 +78,7 @@ func TestCmdMigrateWithoutOtherKeyFile(t *testing.T) {
 		}
 	}()
 	out := &bytes.Buffer{}
-	err = cmdMigrate.Run(newContext(out), []string{})
+	err = cmdMigrate.Run(newContext(out, "migrate"), []string{})
 	if err == nil {
 		t.Error("Migrate without other key file should raise error")
 	}
