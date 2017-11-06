@@ -62,6 +62,13 @@ $ go get github.com/pinzolo/spwd
 1. Run `gofmt -s`
 1. Create a new Pull Request
 
+## Changelog
+
+2017-09-28 JST   v1.0.0   First release.
+2017-09-29 JST   v1.0.1   Add `version` subcommand.
+2017-09-30 JST   v1.1.0   Add `search` subcommand.
+2017-11-06 JST   v1.2.0   Add master password feature.
+
 ## Author
 
 [pinzolo](https://github.com/pinzolo)
