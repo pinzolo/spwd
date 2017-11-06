@@ -9,14 +9,16 @@ import (
 
 func TestMerge(t *testing.T) {
 	a := Config{
-		KeyFile:          "aid",
-		DataFile:         "adata",
-		FilteringCommand: "afil",
+		KeyFile:              "aid",
+		DataFile:             "adata",
+		FilteringCommand:     "afil",
+		UnprotectiveCommands: []string{"new", "migrate"},
 	}
 	b := Config{
-		KeyFile:          "bid",
-		DataFile:         "bdata",
-		FilteringCommand: "bfil",
+		KeyFile:              "bid",
+		DataFile:             "bdata",
+		FilteringCommand:     "bfil",
+		UnprotectiveCommands: []string{"remove"},
 	}
 	x := a.Merge(b)
 	if x.KeyFile != "bid" {
@@ -27,6 +29,9 @@ func TestMerge(t *testing.T) {
 	}
 	if x.FilteringCommand != "bfil" {
 		t.Errorf("FilteringCommand should be 'bfil', but got %s", x.FilteringCommand)
+	}
+	if len(x.UnprotectiveCommands) == 1 && x.UnprotectiveCommands[0] != "remove" {
+		t.Errorf("UnprotectiveCommands should be overriden, but got %s", x.UnprotectiveCommands)
 	}
 }
 
@@ -201,5 +206,26 @@ func TestFileConfigOnFileNotExist(t *testing.T) {
 	_, ok := FileConfig()
 	if ok {
 		t.Error("FileConfig should return false when config file exists")
+	}
+}
+
+func TestIsProtective(t *testing.T) {
+	cfg := Config{
+		KeyFile:              "aid",
+		DataFile:             "adata",
+		FilteringCommand:     "afil",
+		UnprotectiveCommands: []string{"copy", "search", "new", "migrate"},
+	}
+	if cfg.IsProtective("new") {
+		t.Errorf("new should not be protected")
+	}
+	if !cfg.IsProtective("remove") {
+		t.Errorf("remove should be protected")
+	}
+	if !cfg.IsProtective("copy") {
+		t.Errorf("copy should be always protected")
+	}
+	if !cfg.IsProtective("search") {
+		t.Errorf("search should be always protected")
 	}
 }

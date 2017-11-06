@@ -40,9 +40,10 @@ func GetConfig() (Config, error) {
 // Merge config values and returns new Config.
 func (cfg Config) Merge(other Config) Config {
 	newCfg := Config{
-		KeyFile:          cfg.KeyFile,
-		DataFile:         cfg.DataFile,
-		FilteringCommand: cfg.FilteringCommand,
+		KeyFile:              cfg.KeyFile,
+		DataFile:             cfg.DataFile,
+		FilteringCommand:     cfg.FilteringCommand,
+		UnprotectiveCommands: cfg.UnprotectiveCommands,
 	}
 	if other.KeyFile != "" {
 		newCfg.KeyFile = other.KeyFile
