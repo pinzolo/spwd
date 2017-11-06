@@ -12,6 +12,9 @@ Save your password interactively with `spwd new`.
 Input password is encrypted with AES-256 using your secret file.  
 Decrypt and copy password to clipboard with `spwd copy <NAME>`.
 
+You can register master password with `spwd master` subcommand.
+If master password is registered, spwd requires master password on executing each subcommands.
+
 ## Screenshot
 
 [Screenshot](https://pinzolo.github.io/assets/img/20170928_spwd-sample.gif)
@@ -27,6 +30,11 @@ key_file: /path/to/your/secret/file
 data_file: /path/to/your/data/file
 # command used with `search` subcommand.
 filtering_command: fzf
+# subcommands that are not protected with master password.
+# copy and search are always protected.
+unprotective_commands: 
+  - new
+  - remove
 ```
 
 If config file is not found, use below configuration as default.
@@ -35,6 +43,7 @@ If config file is not found, use below configuration as default.
 key_file: ~/.ssh/id_rsa
 data_file: ~/.local/share/spwd/data.dat
 filtering_command: peco
+unprotective_commands: []
 ```
 
 ## Install
