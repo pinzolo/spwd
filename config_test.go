@@ -31,7 +31,7 @@ func TestMerge(t *testing.T) {
 		t.Errorf("FilteringCommand should be 'bfil', but got %s", x.FilteringCommand)
 	}
 	if len(x.UnprotectiveCommands) == 1 && x.UnprotectiveCommands[0] != "remove" {
-		t.Errorf("UnprotectiveCommands should be overriden, but got %s", x.UnprotectiveCommands)
+		t.Errorf("UnprotectiveCommands should be overridden, but got %s", x.UnprotectiveCommands)
 	}
 }
 
