@@ -64,6 +64,7 @@ $ go get github.com/pinzolo/spwd
 
 ## Changelog
 
+* 2021-03-02 JST   v1.2.0   Add go.mod.
 * 2017-11-06 JST   v1.2.0   Add master password feature.
 * 2017-09-30 JST   v1.1.0   Add `search` subcommand.
 * 2017-09-29 JST   v1.0.1   Add `version` subcommand.
