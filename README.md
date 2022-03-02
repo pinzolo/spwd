@@ -1,5 +1,6 @@
 # spwd
-[![Build Status](https://travis-ci.org/pinzolo/spwd.png)](http://travis-ci.org/pinzolo/spwd)
+
+[![Test](https://github.com/pinzolo/spwd/actions/workflows/test.yml/badge.svg)](https://github.com/pinzolo/spwd/actions/workflows/test.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/pinzolo/spwd)](https://goreportcard.com/report/github.com/pinzolo/spwd)
 [![Godoc](http://img.shields.io/badge/godoc-reference-blue.svg)](https://godoc.org/github.com/pinzolo/spwd)
 [![license](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/pinzolo/spwd/master/LICENSE)
