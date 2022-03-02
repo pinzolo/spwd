@@ -26,7 +26,7 @@ func TestCmdList(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	expected := "  NAME        DESCRIPTION         \n ------ -------------------------- \n  foo   This is test password     \n  bar   This is another password  \n"
+	expected := "  NAME        DESCRIPTION         \n------- ---------------------------\n  foo   This is test password     \n  bar   This is another password  \n"
 	if got := out.String(); got != expected {
 		t.Errorf("exptected: \n%s\n\nbut got: \n%s", expected, got)
 		fmt.Println(len(expected), len(got))
