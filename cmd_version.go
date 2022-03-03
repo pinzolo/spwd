@@ -12,7 +12,7 @@ var cmdVersion = &Command{
 }
 
 // Version of spwd
-const Version = "v1.2.1"
+const Version = "v1.4.0"
 
 func runVersion(ctx context, args []string) error {
 	fmt.Fprintln(ctx.out, fmt.Sprintf("spwd %s", Version))
