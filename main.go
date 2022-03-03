@@ -52,6 +52,7 @@ func (c *Command) Usage() {
 // The order here is the order in which they are printed by 'spwd help'.
 var commands = []*Command{
 	cmdCopy,
+	cmdGenerate,
 	cmdList,
 	cmdMigrate,
 	cmdMaster,
