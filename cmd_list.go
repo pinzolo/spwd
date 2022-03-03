@@ -18,7 +18,12 @@ func runList(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	Initialize(cfg)
+
+	err = Initialize(cfg)
+	if err != nil {
+		return err
+	}
+
 	is, err := LoadItemsWithConfig(cfg)
 	if err != nil {
 		return err
@@ -31,8 +36,8 @@ func runList(ctx context, args []string) error {
 	}
 
 	if len(is) == 0 {
-		fmt.Fprintln(ctx.out, "no password.")
-		return nil
+		_, err = fmt.Fprintln(ctx.out, "no password.")
+		return err
 	}
 
 	tw := tablewriter.NewWriter(ctx.out)

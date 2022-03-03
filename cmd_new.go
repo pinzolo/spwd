@@ -19,7 +19,12 @@ func runNew(ctx context, args []string) error {
 	if err != nil {
 		return err
 	}
-	Initialize(cfg)
+
+	err = Initialize(cfg)
+	if err != nil {
+		return err
+	}
+
 	key, err := GetKey(cfg.KeyFile)
 	if err != nil {
 		return err
